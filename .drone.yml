@@ -1,11 +1,12 @@
 pipeline:
   build:
     image: ulexus/drone-revel
+    workspace:
+       base: /go
+       path: src/github.com/CyCoreSystems/cycore-web
     pull: true
     commands:
-      - mkdir -p /go/github.com/CyCoreSystems/cycore-web
-      - cp -a * /go/github.com/CyCoreSystems/cycore-web
-      - revel build github.com/CyCoreSystems/cycore-web tmp
+      - revel build github.com/CyCoreSystems/cycore-web tmp prod
   publish:
     image: plugins/docker
     repo: quay.io/cycore/web
