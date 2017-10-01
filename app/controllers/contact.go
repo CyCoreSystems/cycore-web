@@ -8,7 +8,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/CyCoreSystems/test-revel/app/routes"
+	"github.com/CyCoreSystems/cycore-web/app/routes"
 	"github.com/pkg/errors"
 	"github.com/revel/revel"
 )
