@@ -1,9 +1,9 @@
+workspace:
+  base: /go
+  path: src/github.com/CyCoreSystems/cycore-web
 pipeline:
   build:
     image: ulexus/drone-revel
-    workspace:
-       base: /go
-       path: src/github.com/CyCoreSystems/cycore-web
     pull: true
     commands:
       - revel build github.com/CyCoreSystems/cycore-web tmp prod
