@@ -3,11 +3,12 @@ workspace:
   path: src/github.com/CyCoreSystems/cycore-web
 pipeline:
   build:
-    image: ulexus/drone-revel
+    image: golang:1.9
     pull: true
     commands:
-      - export PATH=$${PATH}:/go/bin
-      - revel build github.com/CyCoreSystems/cycore-web tmp prod
+      - mkdir /go/bin /go/src
+      - go get github.com/revel/cmd/revel
+      - /go/bin/revel build github.com/CyCoreSystems/cycore-web tmp prod
   publish:
     image: plugins/docker
     repo: quay.io/cycore/web
