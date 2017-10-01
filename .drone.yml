@@ -6,6 +6,7 @@ pipeline:
     image: ulexus/drone-revel
     pull: true
     commands:
+      - export PATH=$${PATH}:/go/bin
       - revel build github.com/CyCoreSystems/cycore-web tmp prod
   publish:
     image: plugins/docker
