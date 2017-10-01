@@ -8,7 +8,7 @@ pipeline:
     commands:
       - mkdir -p /go/bin /go/src
       - go get github.com/revel/cmd/revel
-      - revel build github.com/CyCoreSystems/cycore-web tmp prod
+      - revel build github.com/CyCoreSystems/cycore-web /go/tmp prod
   publish:
     image: plugins/docker
     repo: quay.io/cycore/web
