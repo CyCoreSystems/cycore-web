@@ -1,0 +1,34 @@
+label, .label, input, select, textarea {
+	font-size: 20px;
+	line-height: 20px;
+	display: inline-block;
+	.border-radius(3px);
+	vertical-align: top;
+	padding: 5px 10px;
+	border: 0 none;
+	float: left;
+	width: auto;
+}
+
+input, select, textarea {
+
+}
+
+input {
+	border: 1px solid @lightgrey;
+}
+	input[type=submit] {
+		.bold;
+		padding: 7px 20px;
+		margin-left: 10px;
+		background: @keylight;
+		color: white;
+		.fasttrans;
+	}
+		 input[type=submit]:hover,  input[type=submit]:active {
+			background: saturate(@contrast, 20%); 
+			.fasttrans;
+		}
+
+
+

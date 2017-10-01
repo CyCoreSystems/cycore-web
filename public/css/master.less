@@ -1,0 +1,87 @@
+@import 'grid.import.less';
+@import 'var.import.less';
+@import 'fonts.import.less';
+@import 'rules.import.less';
+@import 'anim.import.less';
+
+@import 'base.import.less';
+@import 'nav.import.less';
+
+@import 'forms.import.less';
+@import 'tables.import.less';
+@import 'button.import.less';
+
+@import 'media.import.less';
+
+@import 'alert.import.less';
+
+//ADD CUSTOM AND OVERRIDE CODE HERE
+		
+
+
+
+//HOME
+
+#mainlogo {
+	background: url('/public/img/logo/Cycore_web_optimized.jpg')
+		center center no-repeat;
+	background-size: contain;
+	height: 500px;
+}
+#mainstatement {
+	color: @keydark;
+	text-align: center;
+}
+#maincontact {
+	h4 { text-align: center; }
+	form { padding: 20px; 
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		align-items: center;
+	}
+	input { margin: 2px; flex: 1 0 auto; } 
+}
+#mainservice {
+	padding: 0 10px;
+	ul { .twelve;
+		display: flex;
+			flex-direction: row;
+			flex-wrap: wrap;
+			justify-content: space-around;
+			align-content: stretch;
+
+		li {
+			display: block;
+			height: 5em;
+			width: auto;
+			margin: 10px;
+			flex: 1 0 auto;
+			font-size: 1.5em;
+			font-weight: bold;
+			color: @darkergrey;
+			text-align: center;
+			padding: 1em;
+			padding-top: 2em;
+			.stripes;
+		}
+			.one  {background-color: @contrast; }
+			.two {background-color: lighten(#2196f3, 10%);}
+			.three {background-color: fadeout(#4caf50, 10%);}
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

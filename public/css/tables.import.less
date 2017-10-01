@@ -1,0 +1,49 @@
+//TABLE
+
+table {
+	.unit;
+	border-collapse: collapse;	
+	background-clip: padding-box;
+}
+       td, th {
+		margin: 0;
+		text-align: center;
+              vertical-align: middle;
+		padding: 7px 5px;
+	}
+
+@color1: fadeout(#fff, 40%);
+@color2: fadeout(lighten(desaturate(@highlightblue, 20%), 40%), 45%);
+
+        tr:nth-child(2n+1) td {
+                background: @color1;
+        }
+        tr:nth-child(2n) td {
+                background: @color2;
+        }
+        
+	 th {
+                background: @lightergrey;
+                color: @darkgrey;
+	}
+		tr:hover td:nth-child(1n) {
+			background-color: @highlightyellow;
+		}
+		td.header { 
+			background: transparent !important;
+			color: @darkergrey;
+			text-shadow: 1px 1px 1px #fff;
+			font-weight: bold;
+			text-align: right;
+			padding-right: 15px;
+		}
+
+	table i { 
+		color: @darkergrey;
+	}
+		table i:hover {
+			color: fadeout(@lightlightblue, 30%);
+		}
+
+.large { width: 80%; margin-left: 10%; }
+

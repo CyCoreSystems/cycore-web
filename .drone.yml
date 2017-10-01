@@ -1,0 +1,26 @@
+pipeline:
+  build:
+    image: ulexus/drone-revel
+    pull: true
+    commands:
+      - mkdir -p ${GOPATH}/github.com/CyCoreSystems/test-revel
+      - cp -a * ${GOPATH}/github.com/CyCoreSystems/test-revel/
+      - revel build github.com/CyCoreSystems/test-revel tmp
+  publish:
+    image: plugins/docker
+    repo: quay.io/cycore/web
+    tags:
+      - "${DRONE_COMMIT}"
+    registry: quay.io
+    email: ulexus@gmail.com
+    secrets: [ docker_username, docker_password ]
+  deploy:
+    image: quay.io/honestbee/drone-kubernetes
+    namespace: web
+    deployment: cycore
+    container: web
+    secrets: [ kubernetes_username, kubernetes_token, kubernetes_server ]
+    repo: quay.io/cycore/web
+    tag:
+      - "${DRONE_COMMIT}"
+

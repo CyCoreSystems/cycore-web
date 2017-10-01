@@ -1,0 +1,164 @@
+
+//PRESETS
+
+body, div, nav, ul, li, a, label, span, table {
+       margin: 0;
+       padding: 0;
+	float: left;
+	box-sizing: border-box;
+	background-clip: border-box;
+}
+        body {
+              min-height: 100%;
+              height: 100%;
+		background: @background;
+	 }
+        ul {
+                list-style: none;
+        }
+        div {
+		float: left;
+	 }
+        a { 
+		text-decoration: none; 
+		font-weight: bold;
+		padding: 5px 10px;
+		.border-radius(7px);
+		.fasttrans;
+		color: @key;
+	}
+		a:hover { .fasttrans; color: @keylight;}
+
+.hide { display: none; }  
+
+//GRID COLUMNS
+
+.twelve { .column(12); }
+.ten { .column(10); }
+.nine { .column(9); }
+.eight { .column(8); }
+.six { .column(6); }
+.five { .column(5); }
+.four { .column(4); }
+.three { .column(3); }
+.two { .column(2); }
+
+//STRUCTURES
+
+#page { 
+	width: 100%;
+	height: 100%;
+	min-height: 500px;
+	background: white;
+}
+
+.unit {			//used for tables
+        overflow: hidden;
+        .background-linear-gradient(#fff 25%, @lightgrey);
+        border: 1px solid @lightgrey;
+        .border-radius(5px);
+        .box-shadow(1px 1px 1px 0 rgba(0, 0, 0, 0.6));
+}
+.contentunit {
+	.background-linear-gradient(white, fadeout(@keylight, 98%));
+	.border-radius(10px);
+	border: 2px solid fadeout(@keylight, 60%);
+}
+.transcontentunit {
+	.contentunit;
+	background: transparent none;
+	border: 2px solid transparent;
+}
+.colorcontentunit {
+	.contentunit;
+	background: @key;
+	border: 2px solid @key;
+	font-size: 1.3em;
+	color: white;
+	padding: 20px;
+}
+
+label {
+	width: 40%;
+	text-align: right;
+	margin-left: 7px;
+}
+
+
+i {
+	color: white;
+	display: block;
+	text-align: center;
+	margin: 0 auto;
+	background-color: @key;
+	.border-radius(150px);
+	.box-shadow(0px 1px 2px 0 @darkestgrey);
+	.fasttrans;
+}
+	i:hover { background-color: @keylight; .fasttrans; }
+
+	.social i {
+		font-size: 26px;
+		height: 32px;
+		width: 42px;
+		padding-top: 10px;
+		color: white;
+	}
+	
+	.hide { display: none; }
+
+		.tag { 
+			display: block;
+			background: fadeout(@keylight, 80%);
+			.border-radius(2px);
+			padding: 2px 5px;
+			margin: 2px 10px 2px 0;
+			border: 1px solid @lightestgrey;
+			color: @darkgrey;
+			font-weight: bold;
+		
+		}
+
+.footer {
+	position: relative;
+
+		width: 100%;
+		height: 50px;
+		padding: 50px 30px 0 30px; 
+	
+			.copy, .credit {
+				.sans;
+				font-size: 16px;
+				font-weight: normal;
+				line-height: 30px;
+				margin: 0;
+				width: auto;
+				padding: 0 10px;
+			}
+				.credit a { 
+					margin: 0; 
+					padding: 0; 
+					line-height: 30px; 
+					color: @key;
+				}
+					.credit a:hover { 
+						color: @keydark; 
+					}
+				.copy {
+					color: @darkgrey;
+					float: right;
+				}
+			.login { 
+				float: right; 					
+				
+				a { .sans; }
+			}
+
+		.social { 
+			float: right; 
+			height: 100%;
+			padding-right: 50px;
+		}
+
+}
+
