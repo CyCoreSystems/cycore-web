@@ -8,6 +8,8 @@ pipeline:
     commands:
       - mkdir -p /go/bin /go/src
       - go get github.com/revel/cmd/revel
+      - go get -u github.com/golang/dep/cmd/dep/...
+      - dep ensure
       - revel build github.com/CyCoreSystems/cycore-web ../tmp prod >> /dev/null
       - mv ../tmp .
   publish:
