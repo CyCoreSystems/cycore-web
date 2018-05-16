@@ -1,6 +1,11 @@
 package app
 
-import "github.com/revel/revel"
+import (
+	"os"
+
+	"github.com/revel/log15"
+	"github.com/revel/revel"
+)
 
 func init() {
 	// Filters is the default set of global filters.
@@ -23,8 +28,10 @@ func init() {
 	// ( order dependent )
 	// revel.OnAppStart(InitDB)
 	// revel.OnAppStart(FillCache)
+	revel.OnAppStart(InitLogger)
 }
 
+// HeaderFilter is a default set of headers to be added
 // TODO turn this into revel.HeaderFilter
 // should probably also have a filter for CSRF
 // not sure if it can go in the same filter or not
@@ -35,4 +42,18 @@ var HeaderFilter = func(c *revel.Controller, fc []revel.Filter) {
 	c.Response.Out.Header().Add("X-Content-Type-Options", "nosniff")
 
 	fc[0](c, fc[1:]) // Execute the next filter stage.
+}
+
+// InitLogger initializes the revel logger
+func InitLogger() {
+
+	// If we are running inside kubernetes, use the oklog logger
+	if os.Getenv("KUBERNETES_SERVICE_HOST") != "" {
+		h, err := log15.NetHandler("tcp", "oklog.log:7651", log15.JsonFormat())
+		if err != nil {
+			revel.RootLog.Error("failed to construct network log handler", "error", err)
+			return
+		}
+		revel.RootLog.SetHandler(h)
+	}
 }
