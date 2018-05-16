@@ -15,12 +15,6 @@ import (
 
 var contactEmailT *template.Template
 
-// EmailContact describes an email EmailContact
-type EmailContact struct {
-	Name  string `json:"name"`
-	Email string `json:"email"`
-}
-
 func init() {
 	contactEmailT = template.Must(template.New("contactEmail").Parse(contactEmailTemplate))
 }
@@ -30,10 +24,12 @@ type Contact struct {
 	*revel.Controller
 }
 
-// Request handles a customer contact request
-func (c Contact) Request(name, email string) revel.Result {
+// ContactRequest handles a customer contact request
+func (c Contact) ContactRequest(name, email string) revel.Result {
 
-	emailBody, err := renderContactEmail(name, email)
+	c.Log.Info("received contact request", "name", name, "email", email, "source", c.ClientIP)
+
+	emailBody, err := c.renderContactEmail(name, email)
 	if err != nil {
 		return c.Controller.RenderError(errors.Wrap(err, "failed to render email for contact request"))
 	}
@@ -43,7 +39,7 @@ func (c Contact) Request(name, email string) revel.Result {
 			Name:  "CyCore Systems, Inc",
 			Email: "sys@cycoresys.com",
 		},
-		To:          getEmailContacts(),
+		To:          c.getEmailContacts(),
 		Subject:     "Contact Request",
 		HTMLContent: emailBody,
 		Tags:        []string{"contact-request"},
@@ -56,7 +52,7 @@ func (c Contact) Request(name, email string) revel.Result {
 	return c.Redirect(routes.App.Index())
 }
 
-func renderContactEmail(name, email string) (string, error) {
+func (c Contact) renderContactEmail(name, email string) (string, error) {
 	buf := new(bytes.Buffer)
 	err := contactEmailT.Execute(buf, struct {
 		Name      string
@@ -73,12 +69,13 @@ func renderContactEmail(name, email string) (string, error) {
 	return buf.String(), nil
 }
 
-func getEmailContacts() []sendinblue.Address {
+func (c Contact) getEmailContacts() []sendinblue.Address {
 
 	var ret []sendinblue.Address
 	if err := json.Unmarshal([]byte(os.Getenv("CONTACT_RECIPIENTS")), &ret); err != nil {
 
 		// Fall back to default if we fail to load from environment
+		c.Log.Warn("failed to load recipients from environment", "error", err)
 		ret = append(ret, sendinblue.Address{
 			Name:  "System Receiver",
 			Email: "sys@cycoresys.com",
