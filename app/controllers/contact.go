@@ -29,6 +29,15 @@ func (c Contact) ContactRequest(name, email string) revel.Result {
 
 	c.Log.Info("received contact request", "name", name, "email", email, "source", c.ClientIP)
 
+	if name == "" {
+		c.Flash.Error("Please supply a name")
+		return c.Redirect(routes.App.Index())
+	}
+	if email == "" {
+		c.Flash.Error("Please supply an email address")
+		return c.Redirect(routes.App.Index())
+	}
+
 	emailBody, err := c.renderContactEmail(name, email)
 	if err != nil {
 		return c.Controller.RenderError(errors.Wrap(err, "failed to render email for contact request"))
@@ -45,7 +54,8 @@ func (c Contact) ContactRequest(name, email string) revel.Result {
 		Tags:        []string{"contact-request"},
 	}
 	if err = msg.Send(os.Getenv("SENDINBLUE_APIKEY")); err != nil {
-		return c.Controller.RenderError(err)
+		c.Flash.Error("Request failed")
+		return c.Redirect(routes.App.Index())
 	}
 
 	c.Flash.Success("Request sent")
