@@ -87,7 +87,10 @@ func emailRequestBody(email string) ([]byte, error) {
 		From    []string          `json:"from"`
 		HTML    string            `json:"html"`
 	}{
-		To:      map[string]string{"ulexus@gmail.com": "Sean C McCord"},
+		To: map[string]string{
+			"scm@cycoresys.com": "Sean C McCord",
+			"ll@cycoresys.com":  "Laurel Lawson",
+		},
 		Subject: "Contact Request",
 		From:    []string{"sys@cycoresys.com", "CyCore Systems Inc"},
 		HTML:    email,
