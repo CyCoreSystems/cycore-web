@@ -45,7 +45,7 @@ func (c Contact) ContactRequest(name, email string) revel.Result {
 	}
 
 	msg := &sendinblue.Message{
-		Sender: sendinblue.Address{
+		Sender: &sendinblue.Address{
 			Name:  "CyCore Systems, Inc",
 			Email: "sys@cycoresys.com",
 		},
@@ -57,6 +57,11 @@ func (c Contact) ContactRequest(name, email string) revel.Result {
 	if err = msg.Send(os.Getenv("SENDINBLUE_APIKEY")); err != nil {
 		c.Log.Error("failed to send contact email", "error", err)
 		c.Flash.Error("Request failed")
+
+		enc := json.NewEncoder(os.Stdout)
+		enc.SetIndent("", "   ")
+		enc.Encode(msg)
+
 		return c.Redirect(routes.App.Index())
 	}
 
@@ -81,14 +86,14 @@ func (c Contact) renderContactEmail(name, email string) (string, error) {
 	return buf.String(), nil
 }
 
-func (c Contact) getEmailContacts() []sendinblue.Address {
+func (c Contact) getEmailContacts() []*sendinblue.Address {
 
-	var ret []sendinblue.Address
+	var ret []*sendinblue.Address
 	if err := json.Unmarshal([]byte(os.Getenv("CONTACT_RECIPIENTS")), &ret); err != nil {
 
 		// Fall back to default if we fail to load from environment
 		c.Log.Warn("failed to load recipients from environment", "error", err)
-		ret = append(ret, sendinblue.Address{
+		ret = append(ret, &sendinblue.Address{
 			Name:  "System Receiver",
 			Email: "sys@cycoresys.com",
 		})
