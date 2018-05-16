@@ -9,7 +9,6 @@ import (
 
 	"github.com/CyCoreSystems/cycore-web/app/routes"
 	"github.com/CyCoreSystems/sendinblue"
-	"github.com/pkg/errors"
 	"github.com/revel/revel"
 )
 
@@ -40,7 +39,9 @@ func (c Contact) ContactRequest(name, email string) revel.Result {
 
 	emailBody, err := c.renderContactEmail(name, email)
 	if err != nil {
-		return c.Controller.RenderError(errors.Wrap(err, "failed to render email for contact request"))
+		c.Log.Error("failed to render contact email", "error", err)
+		c.Flash.Error("Internal error encountered; please try again")
+		return c.Redirect(routes.App.Index())
 	}
 
 	msg := &sendinblue.Message{
@@ -54,6 +55,7 @@ func (c Contact) ContactRequest(name, email string) revel.Result {
 		Tags:        []string{"contact-request"},
 	}
 	if err = msg.Send(os.Getenv("SENDINBLUE_APIKEY")); err != nil {
+		c.Log.Error("failed to send contact email", "error", err)
 		c.Flash.Error("Request failed")
 		return c.Redirect(routes.App.Index())
 	}
