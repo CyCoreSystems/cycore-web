@@ -4,16 +4,22 @@ import (
 	"bytes"
 	"encoding/json"
 	"html/template"
-	"net/http"
 	"os"
 	"time"
 
 	"github.com/CyCoreSystems/cycore-web/app/routes"
+	"github.com/CyCoreSystems/sendinblue"
 	"github.com/pkg/errors"
 	"github.com/revel/revel"
 )
 
 var contactEmailT *template.Template
+
+// EmailContact describes an email EmailContact
+type EmailContact struct {
+	Name  string `json:"name"`
+	Email string `json:"email"`
+}
 
 func init() {
 	contactEmailT = template.Must(template.New("contactEmail").Parse(contactEmailTemplate))
@@ -26,37 +32,24 @@ type Contact struct {
 
 // Request handles a customer contact request
 func (c Contact) Request(name, email string) revel.Result {
+
 	emailBody, err := renderContactEmail(name, email)
 	if err != nil {
 		return c.Controller.RenderError(errors.Wrap(err, "failed to render email for contact request"))
 	}
 
-	body, err := emailRequestBody(emailBody)
-	if err != nil {
-		return c.Controller.RenderError(errors.Wrap(err, "failed to encode email request"))
+	msg := &sendinblue.Message{
+		Sender: sendinblue.Address{
+			Name:  "CyCore Systems, Inc",
+			Email: "sys@cycoresys.com",
+		},
+		To:          getEmailContacts(),
+		Subject:     "Contact Request",
+		HTMLContent: emailBody,
+		Tags:        []string{"contact-request"},
 	}
-
-	// Don't sent when in dev mode
-	if revel.Config.BoolDefault("mode.dev", true) {
-		revel.INFO.Println("email:", name, email, bytes.NewBuffer(body).String())
-		c.Flash.Success("request faked")
-		return c.Redirect(routes.App.Index())
-	}
-
-	mreq, err := http.NewRequest("POST", "https://api.sendinblue.com/v2.0/email", bytes.NewReader(body))
-	mreq.Header.Add("api-key", os.Getenv("SENDINBLUE_APIKEY"))
-	mreq.Header.Add("Content-Type", "application/json")
-	mreq.Header.Add("X-Mailin-Tag", "contact-request")
-
-	resp, err := http.DefaultClient.Do(mreq)
-	if err != nil {
-		revel.ERROR.Println("Failed to send contact request email", name, email, err)
-		return c.Controller.RenderError(errors.Wrap(err, "failed to send contact request email"))
-	}
-	if resp.StatusCode > 299 {
-		revel.ERROR.Println("Contact request email was rejected:", name, email, resp.Status, bytes.NewBuffer(body).String())
-		c.Flash.Error("failed to send context request")
-		return c.Redirect(routes.App.Index())
+	if err = msg.Send(os.Getenv("SENDINBLUE_APIKEY")); err != nil {
+		return c.Controller.RenderError(err)
 	}
 
 	c.Flash.Success("Request sent")
@@ -80,39 +73,19 @@ func renderContactEmail(name, email string) (string, error) {
 	return buf.String(), nil
 }
 
-func getRecipients() map[string]string {
-	ret := make(map[string]string)
+func getEmailContacts() []sendinblue.Address {
 
-	type Recipient struct {
-		Name  string
-		Email string
+	var ret []sendinblue.Address
+	if err := json.Unmarshal([]byte(os.Getenv("CONTACT_RECIPIENTS")), &ret); err != nil {
+
+		// Fall back to default if we fail to load from environment
+		ret = append(ret, sendinblue.Address{
+			Name:  "System Receiver",
+			Email: "sys@cycoresys.com",
+		})
+
 	}
-
-	var data []Recipient
-	if err := json.Unmarshal([]byte(os.Getenv("CONTACT_RECIPIENTS")), &data); err != nil {
-		ret["System Receiver"] = "sys@cycoresys.com"
-	}
-
-	for _, d := range data {
-		ret[d.Name] = d.Email
-	}
-
 	return ret
-}
-
-func emailRequestBody(email string) ([]byte, error) {
-	body := struct {
-		To      map[string]string `json:"to"`
-		Subject string            `json:"subject"`
-		From    []string          `json:"from"`
-		HTML    string            `json:"html"`
-	}{
-		To:      getRecipients(),
-		Subject: "Contact Request",
-		From:    []string{"sys@cycoresys.com", "CyCore Systems Inc"},
-		HTML:    email,
-	}
-	return json.Marshal(&body)
 }
 
 var contactEmailTemplate = `
