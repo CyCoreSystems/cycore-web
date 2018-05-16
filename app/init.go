@@ -44,16 +44,16 @@ var HeaderFilter = func(c *revel.Controller, fc []revel.Filter) {
 	fc[0](c, fc[1:]) // Execute the next filter stage.
 }
 
-// InitLogger initializes the revel logger
+// InitLogger initializes the logging handler
 func InitLogger() {
 
 	// If we are running inside kubernetes, use the oklog logger
 	if os.Getenv("KUBERNETES_SERVICE_HOST") != "" {
 		h, err := log15.NetHandler("tcp", "oklog.log:7651", log15.JsonFormat())
 		if err != nil {
-			revel.RootLog.Error("failed to construct network log handler", "error", err)
+			revel.AppLog.Error("failed to construct network log handler", "error", err)
 			return
 		}
-		revel.RootLog.SetHandler(h)
+		revel.RevelLog.SetHandler(h)
 	}
 }
