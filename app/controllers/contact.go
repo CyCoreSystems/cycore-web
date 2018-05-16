@@ -80,6 +80,26 @@ func renderContactEmail(name, email string) (string, error) {
 	return buf.String(), nil
 }
 
+func getRecipients() map[string]string {
+	ret := make(map[string]string)
+
+	type Recipient struct {
+		Name  string
+		Email string
+	}
+
+	var data []Recipient
+	if err := json.Unmarshal([]byte(os.Getenv("CONTACT_RECIPIENTS")), &data); err != nil {
+		ret["System Receiver"] = "sys@cycoresys.com"
+	}
+
+	for _, d := range data {
+		ret[d.Name] = d.Email
+	}
+
+	return ret
+}
+
 func emailRequestBody(email string) ([]byte, error) {
 	body := struct {
 		To      map[string]string `json:"to"`
@@ -87,10 +107,7 @@ func emailRequestBody(email string) ([]byte, error) {
 		From    []string          `json:"from"`
 		HTML    string            `json:"html"`
 	}{
-		To: map[string]string{
-			"scm@cycoresys.com": "Sean C McCord",
-			"ll@cycoresys.com":  "Laurel Lawson",
-		},
+		To:      getRecipients(),
 		Subject: "Contact Request",
 		From:    []string{"sys@cycoresys.com", "CyCore Systems Inc"},
 		HTML:    email,
