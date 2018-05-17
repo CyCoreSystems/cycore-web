@@ -1,4 +1,4 @@
 #!/bin/bash
-go generate
+#go generate
 go build
 ./cycore-web -debug

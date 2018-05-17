@@ -1,7 +1,5 @@
 package main
 
-//go:generate esc -o static.go -prefix assets -ignore \.map$ assets
-
 import (
 	"flag"
 	"html/template"
@@ -81,12 +79,10 @@ func main() {
 		templates: template.Must(template.ParseGlob("views/*.html")),
 	}
 
-	assets := http.FileServer(FS(debug))
-
-	e.GET("/css/*", echo.WrapHandler(assets))
-	e.GET("/img/*", echo.WrapHandler(assets))
-	e.GET("/js/*", echo.WrapHandler(assets))
-	e.GET("/scm.asc", echo.WrapHandler(assets))
+	e.Static("/css/*", "css")
+	e.Static("/js/*", "js")
+	e.Static("/img/*", "img")
+	e.File("/scm.asc", "public/scm.asc")
 
 	e.GET("/", home)
 
