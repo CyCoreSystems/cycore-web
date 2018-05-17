@@ -69,7 +69,7 @@ func contactRequest(c echo.Context) (err error) {
 
 		enc := json.NewEncoder(os.Stdout)
 		enc.SetIndent("", "   ")
-		enc.Encode(msg)
+		enc.Encode(msg) // nolint
 
 		return c.JSON(http.StatusBadGateway, NewError(errors.New("internal error; please retry")))
 	}

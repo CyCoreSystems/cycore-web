@@ -13,7 +13,7 @@ pipeline:
       - dep ensure
       - go generate
       - gometalinter --install
-      - gometalinter --vendor ./...
+      - gometalinter --skip static.go --vendor ./...
       - go build
   publish:
     image: plugins/docker:17.05
