@@ -9,6 +9,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/CyCoreSystems/cycore-web/db"
 	"github.com/CyCoreSystems/sendinblue"
 	"github.com/labstack/echo"
 )
@@ -37,6 +38,9 @@ func contactRequest(c echo.Context) (err error) {
 	}
 
 	cc.Log.Debugf(`received contact request from "%s" <%s> (%s)`, req.Name, req.Email, c.RealIP())
+	if err = db.LogContact(req.Name, req.Email); err != nil {
+		cc.Log.Warn("failed to write contact record to database")
+	}
 
 	if req.Name == "" {
 		cc.Log.Warn("empty name")
