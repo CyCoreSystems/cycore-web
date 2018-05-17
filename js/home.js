@@ -42,8 +42,7 @@ function contactRequest(ev) {
 
       if(resp.ok) {
          success.innerHTML = 'Request Sent'
-         name = ''
-         email = ''
+         document.querySelector('form').reset()
          return true
       }
       return Promise.resolve(resp.json()).then(function(o) {
