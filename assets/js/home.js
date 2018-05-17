@@ -14,7 +14,10 @@ function getCookie(name) {
    return decodeURIComponent(xsrfCookies[0].split('=')[1]);
 }
 
-function contactRequest() {
+function contactRequest(ev) {
+   ev && ev.preventDefault && ev.preventDefault()
+   ev && ev.stopImmediatePropagation && ev.stopImmediatePropagation()
+
    var name = document.querySelector('input[name=name]').value
    var email = document.querySelector('input[name=email]').value
    var success = document.querySelector('div.alert-success')
@@ -39,14 +42,19 @@ function contactRequest() {
 
       if(resp.ok) {
          success.innerHTML = 'Request Sent'
-         return
+         name = ''
+         email = ''
+         return true
       }
-      return resp.json()
-   })
-   .then(function(o) {
-      failure.innerHTML = o.message
+      return Promise.resolve(resp.json()).then(function(o) {
+         failure.innerHTML = o.message
+      })
    })
    .catch( function(err) {
       failure.innerHTML = 'network error'
    })
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+   document.querySelector('form').addEventListener('submit', contactRequest)
+})
