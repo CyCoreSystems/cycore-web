@@ -7,9 +7,14 @@ pipeline:
     pull: true
     commands:
       - mkdir -p /go/bin /go/src
-      - go get github.com/revel/cmd/revel
-      - revel build github.com/CyCoreSystems/cycore-web ../tmp prod
-      - mv ../tmp .
+      - go get -u github.com/golang/dep/cmd/dep/...
+      - go get -u github.com/alecthomas/gometalinter/...
+      - go get -u github.com/mjibson/esc
+      - dep ensure
+      - go generate
+      - gometalinter --install
+      - gometalinter --vendor ./...
+      - go build
   publish:
     image: plugins/docker:17.05
     repo: quay.io/cycore/web

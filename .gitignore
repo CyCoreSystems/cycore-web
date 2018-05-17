@@ -1,4 +1,2 @@
-test-results/
-tmp/
-routes/
 /vendor/
+/cycore-web
