@@ -36,7 +36,7 @@ func main() {
 
 	flag.Parse()
 
-	log := log15.New()
+	log := log15.New("app", "cycore-web")
 	if os.Getenv("KUBERNETES_SERVICE_HOST") != "" {
 		h, err := log15.NetHandler("tcp", "oklog.log", log15.JsonFormat())
 		if err != nil {
