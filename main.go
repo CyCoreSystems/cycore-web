@@ -4,11 +4,12 @@ import (
 	"flag"
 	"html/template"
 	"net/http"
+	"os"
 
 	"github.com/CyCoreSystems/cycore-web/db"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
-	"go.uber.org/zap"
+	"github.com/revel/log15"
 )
 
 var addr string
@@ -35,24 +36,20 @@ func main() {
 
 	flag.Parse()
 
-	var err error
-
-	var logger *zap.Logger
-	if debug {
-		logger, err = zap.NewDevelopment()
-	} else {
-		logger, err = zap.NewProduction()
+	log := log15.New()
+	if os.Getenv("KUBERNETES_SERVICE_HOST") != "" {
+		h, err := log15.NetHandler("tcp", "oklog.log", log15.JsonFormat())
+		if err != nil {
+			log.Error("failed to construct network logger", "error", err)
+		} else {
+			log.SetHandler(h)
+		}
 	}
-	if err != nil {
-		panic("failed to create logger: " + err.Error())
-	}
-	defer logger.Sync() // nolint
 
-	log := logger.Sugar()
-
-	err = db.Connect()
+	err := db.Connect()
 	if err != nil {
-		log.Panicf("failed to open database: %v", err)
+		log.Crit("failed to open database", "error", err)
+		os.Exit(1)
 	}
 	defer db.Get().Close() // nolint
 
@@ -88,7 +85,11 @@ func main() {
 
 	e.POST("/contact/request", contactRequest)
 
-	log.Fatal(e.Start(addr))
+	if err = e.Start(addr); err != nil {
+		log.Crit(err.Error())
+		os.Exit(1)
+	}
+	os.Exit(0)
 }
 
 func home(c echo.Context) error {

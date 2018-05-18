@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"html/template"
 	"net/http"
 	"os"
@@ -33,13 +34,13 @@ func contactRequest(c echo.Context) (err error) {
 
 	req := new(ContactRequest)
 	if err = cc.Bind(req); err != nil {
-		cc.Log.Warnf("failed to parse input: %s", err.Error())
+		cc.Log.Warn("failed to parse input", "error", err)
 		return c.JSON(http.StatusBadRequest, NewError(errors.New("failed to read request")))
 	}
 
-	cc.Log.Debugf(`received contact request from "%s" <%s> (%s)`, req.Name, req.Email, c.RealIP())
+	cc.Log.Debug(fmt.Sprintf(`received contact request from "%s" <%s> (%s)`, req.Name, req.Email, c.RealIP()))
 	if err = db.LogContact(req.Name, req.Email); err != nil {
-		cc.Log.Warn("failed to write contact record to database")
+		cc.Log.Warn("failed to write contact record to database", "error", err)
 	}
 
 	if req.Name == "" {
@@ -53,7 +54,7 @@ func contactRequest(c echo.Context) (err error) {
 
 	emailBody, err := renderContactEmail(req.Name, req.Email)
 	if err != nil {
-		cc.Log.Errorf("failed to render email body: %s", err.Error())
+		cc.Log.Error("failed to render email body", "error", err)
 		return c.JSON(http.StatusInternalServerError, NewError(errors.New("internal error; please retry")))
 	}
 
@@ -69,7 +70,7 @@ func contactRequest(c echo.Context) (err error) {
 	}
 
 	if err = msg.Send(os.Getenv("SENDINBLUE_APIKEY")); err != nil {
-		cc.Log.Errorf("failed to send contact email: %s", err.Error())
+		cc.Log.Error("failed to send contact email", "error", err)
 
 		enc := json.NewEncoder(os.Stdout)
 		enc.SetIndent("", "   ")

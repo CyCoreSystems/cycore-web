@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/jmoiron/sqlx"
 	"github.com/labstack/echo"
-	"go.uber.org/zap"
+	"github.com/revel/log15"
 )
 
 // Context is the custom context for this web server
@@ -14,5 +14,5 @@ type Context struct {
 	DB *sqlx.DB
 
 	// Log is the core logger
-	Log *zap.SugaredLogger
+	Log log15.Logger
 }
