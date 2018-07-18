@@ -31,7 +31,10 @@ func Connect() error {
 		password = os.Getenv("COCKROACH_PASS")
 	}
 
-	dsn := fmt.Sprintf("postgresql://%s:%s@localhost:26257/cycore?sslmode=require", username, password)
+	dsn := fmt.Sprintf("postgresql://%s:%s@localhost:26257/cycore?sslmode=disabled", username, password)
+	if os.Getenv("KUBERNETES_SERVICE_HOST") != "" {
+		dsn = fmt.Sprintf("postgresql://%s:%s@cockroachdb-public.db:26257/cycore?sslmode=require&sslrootcert=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt", username, password)
+	}
 	if os.Getenv("DSN") != "" {
 		dsn = os.Getenv("DSN")
 	}
