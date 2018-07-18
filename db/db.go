@@ -19,6 +19,7 @@ func Connect() error {
 		return nil
 	}
 
+	var host = "localhost"
 	var username = "nobody"
 	var password string
 
@@ -30,10 +31,17 @@ func Connect() error {
 		username = os.Getenv("COCKROACH_USER")
 		password = os.Getenv("COCKROACH_PASS")
 	}
+	if os.Getenv("COCKROACH_HOST") != "" {
+		host = os.Getenv("COCKROACH_HOST")
+	}
 
-	dsn := fmt.Sprintf("postgresql://%s@localhost:26257/cycore?sslmode=disabled", username)
+	dsn := fmt.Sprintf("postgresql://%s@%s:26257/cycore?sslmode=disabled", username, host)
 	if os.Getenv("KUBERNETES_SERVICE_HOST") != "" {
-		dsn = fmt.Sprintf("postgresql://%s:%s@cockroachdb-public.db.svc.cluster.local:26257/cycore?sslmode=verify-full&sslrootcert=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt&sslcert=/cockroach-certs/cert&sslkey=/cockroach-certs/key", username, password)
+		if host == "localhost" {
+			host = "cockroachdb-public.db.svc.cluster.local"
+		}
+
+		dsn = fmt.Sprintf("postgresql://%s:%s@%s:26257/cycore?sslmode=verify-full&sslrootcert=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt&sslcert=/cockroach-certs/cert&sslkey=/cockroach-certs/key", username, password, host)
 	}
 	if os.Getenv("DSN") != "" {
 		dsn = os.Getenv("DSN")
