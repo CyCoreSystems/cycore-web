@@ -20,13 +20,18 @@ func Connect() error {
 	}
 
 	var username = "nobody"
+	var password string
 
 	u, err := user.Current()
 	if err == nil {
 		username = u.Username
 	}
+	if os.Getenv("COCKROACH_USER") != "" {
+		username = os.Getenv("COCKROACH_USER")
+		password = os.Getenv("COCKROACH_PASS")
+	}
 
-	dsn := fmt.Sprintf("postgresql://%s@localhost:26257/cycore?sslmode=disable", username)
+	dsn := fmt.Sprintf("postgresql://%s:%s@localhost:26257/cycore?sslmode=require", username, password)
 	if os.Getenv("DSN") != "" {
 		dsn = os.Getenv("DSN")
 	}
