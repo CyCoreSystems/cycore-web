@@ -7,9 +7,9 @@ import (
 	"os"
 
 	"github.com/CyCoreSystems/cycore-web/db"
+	"github.com/inconshreveable/log15"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
-	"github.com/revel/log15"
 )
 
 var addr string

@@ -35,7 +35,7 @@ func Connect() error {
 		host = os.Getenv("COCKROACH_HOST")
 	}
 
-	dsn := fmt.Sprintf("postgresql://%s@%s:26257/cycore?sslmode=disabled", username, host)
+	dsn := fmt.Sprintf("postgresql://%s@%s:26257/cycore?sslmode=disable", username, host)
 	if os.Getenv("KUBERNETES_SERVICE_HOST") != "" {
 		if host == "localhost" {
 			host = "cockroachdb-public.db.svc.cluster.local"

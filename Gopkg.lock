@@ -2,98 +2,144 @@
 
 
 [[projects]]
+  digest = "1:eb7913e22e02d8efdee61022a4d94b8d621fd82efa43a9be1d2656e29a2af5de"
   name = "github.com/CyCoreSystems/sendinblue"
   packages = ["."]
+  pruneopts = ""
   revision = "9b851c8f8e26b6bfc746aaa0dbaf8f7a78286ee0"
   version = "v0.1.1"
 
 [[projects]]
+  digest = "1:6098222470fe0172157ce9bbef5d2200df4edde17ee649c5d6e48330e4afa4c6"
   name = "github.com/dgrijalva/jwt-go"
   packages = ["."]
+  pruneopts = ""
   revision = "06ea1031745cb8b3dab3f6a236daf2b0aa468b7e"
   version = "v3.2.0"
 
 [[projects]]
+  digest = "1:a01080d20c45c031c13f3828c56e58f4f51d926a482ad10cc0316225097eb7ea"
+  name = "github.com/go-stack/stack"
+  packages = ["."]
+  pruneopts = ""
+  revision = "2fee6af1a9795aafbe0253a0cfbdf668e1fb8a9a"
+  version = "v1.8.0"
+
+[[projects]]
+  digest = "1:a4fcebba8c1b8ae25dd31f1cfa6c6ed5b1e5719ab2e9e1c18e8c98969ebde215"
+  name = "github.com/inconshreveable/log15"
+  packages = ["."]
+  pruneopts = ""
+  revision = "67afb5ed74ec82fd7ac8f49d27c509ac6f991970"
+  version = "v2.14"
+
+[[projects]]
   branch = "master"
+  digest = "1:f362b0ba1a617ddf4de0c10c0b4c43064ec52fd4e2f44851ec473a0d2644d23e"
   name = "github.com/jmoiron/sqlx"
-  packages = [".","reflectx"]
-  revision = "2aeb6a910c2b94f2d5eb53d9895d80e27264ec41"
+  packages = [
+    ".",
+    "reflectx",
+  ]
+  pruneopts = ""
+  revision = "82935fac6c1a317907c8f43ed3f7f85ea844a78b"
 
 [[projects]]
+  digest = "1:93ccea591e2831353980e9217eb5ec60052565c6fab3c497db8f74602af3fc86"
   name = "github.com/labstack/echo"
-  packages = [".","middleware"]
-  revision = "6d227dfea4d2e52cb76856120b3c17f758139b4e"
-  version = "3.3.5"
+  packages = [
+    ".",
+    "middleware",
+  ]
+  pruneopts = ""
+  revision = "c7eb8da9ec73e78c4f38413f3f835e0cd52c7d72"
+  version = "v3.3.8"
 
 [[projects]]
+  digest = "1:44f403f58ba6ffcc60f0946169d02879dc79a4bf5a84d4215f5f7c6a5865f74b"
   name = "github.com/labstack/gommon"
-  packages = ["bytes","color","log","random"]
-  revision = "588f4e8bddc6cb45c27b448e925c7fd6a5545434"
-  version = "0.2.5"
+  packages = [
+    "bytes",
+    "color",
+    "log",
+    "random",
+  ]
+  pruneopts = ""
+  revision = "7fd9f68ece0bcb1a905fac8f1549f0083f71c51b"
+  version = "v0.2.8"
 
 [[projects]]
   branch = "master"
+  digest = "1:bc36cd980d0069137800b505af4937c6109f4dc7cefe39d7c2efc7c8d51528d6"
   name = "github.com/lib/pq"
-  packages = [".","oid"]
-  revision = "d34b9ff171c21ad295489235aec8b6626023cd04"
+  packages = [
+    ".",
+    "oid",
+  ]
+  pruneopts = ""
+  revision = "9eb73efc1fcc404148b56765b0d3f61d9a5ef8ee"
 
 [[projects]]
+  digest = "1:9ea83adf8e96d6304f394d40436f2eb44c1dc3250d223b74088cc253a6cd0a1c"
   name = "github.com/mattn/go-colorable"
   packages = ["."]
+  pruneopts = ""
   revision = "167de6bfdfba052fa6b2d3664c8f5272e23c9072"
   version = "v0.0.9"
 
 [[projects]]
+  digest = "1:3140e04675a6a91d2a20ea9d10bdadf6072085502e6def6768361260aee4b967"
   name = "github.com/mattn/go-isatty"
   packages = ["."]
-  revision = "0360b2af4f38e8d38c7fce2a9f4e702702d73a39"
-  version = "v0.0.3"
+  pruneopts = ""
+  revision = "6ca4dbf54d38eea1a992b3c722a76a5d1c4cb25c"
+  version = "v0.0.4"
 
 [[projects]]
-  branch = "master"
+  digest = "1:857a9ecd5cb13379ecc8f798f6e6b6b574c98b9355657d91e068275f1120aaf7"
   name = "github.com/valyala/bytebufferpool"
   packages = ["."]
+  pruneopts = ""
   revision = "e746df99fe4a3986f4d4f79e13c1e0117ce9c2f7"
+  version = "v1.0.0"
 
 [[projects]]
   branch = "master"
+  digest = "1:bf6f8915c0338e875383cb7fdebd58a4d360a232f461d9a029d7ccb12f90c5d7"
   name = "github.com/valyala/fasttemplate"
   packages = ["."]
+  pruneopts = ""
   revision = "dcecefd839c4193db0d35b88ec65b4c12d360ab0"
 
 [[projects]]
-  name = "go.uber.org/atomic"
-  packages = ["."]
-  revision = "1ea20fb1cbb1cc08cbd0d913a96dead89aa18289"
-  version = "v1.3.2"
-
-[[projects]]
-  name = "go.uber.org/multierr"
-  packages = ["."]
-  revision = "3c4937480c32f4c13a875a1829af76c98ca3d40a"
-  version = "v1.1.0"
-
-[[projects]]
-  name = "go.uber.org/zap"
-  packages = [".","buffer","internal/bufferpool","internal/color","internal/exit","zapcore"]
-  revision = "eeedf312bc6c57391d84767a4cd413f02a917974"
-  version = "v1.8.0"
-
-[[projects]]
   branch = "master"
+  digest = "1:887074c37fcefc2f49b5ae9c6f9f36107341aec23185613d0e9f1ee81db7f94a"
   name = "golang.org/x/crypto"
-  packages = ["acme","acme/autocert"]
-  revision = "1a580b3eff7814fc9b40602fd35256c63b50f491"
+  packages = [
+    "acme",
+    "acme/autocert",
+  ]
+  pruneopts = ""
+  revision = "505ab145d0a99da450461ae2c1a9f6cd10d1f447"
 
 [[projects]]
   branch = "master"
+  digest = "1:fb9c60108aa8a0c8571f568c05fe8f3be347cf30b6b05d86beda7d7223ff88c8"
   name = "golang.org/x/sys"
   packages = ["unix"]
-  revision = "7c87d13f8e835d2fb3a70a2912c811ed0c1d241b"
+  pruneopts = ""
+  revision = "074acd46bca67915925527c07849494d115e7c43"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "663f98ffe10e2e1074511774007b7ec79196f112e44ab874c8e209c2ee0d9453"
+  input-imports = [
+    "github.com/CyCoreSystems/sendinblue",
+    "github.com/inconshreveable/log15",
+    "github.com/jmoiron/sqlx",
+    "github.com/labstack/echo",
+    "github.com/labstack/echo/middleware",
+    "github.com/lib/pq",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1
