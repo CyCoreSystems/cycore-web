@@ -12,7 +12,7 @@ import (
 
 	"github.com/CyCoreSystems/cycore-web/db"
 	"github.com/CyCoreSystems/sendinblue"
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 )
 
 var contactEmailT *template.Template
@@ -29,7 +29,6 @@ type ContactRequest struct {
 
 // contactRequest handles a customer contact request
 func contactRequest(c echo.Context) (err error) {
-
 	cc := c.(*Context)
 
 	req := new(ContactRequest)
@@ -101,16 +100,13 @@ func renderContactEmail(name, email string) (string, error) {
 }
 
 func getEmailContacts() []*sendinblue.Address {
-
 	var ret []*sendinblue.Address
 	if err := json.Unmarshal([]byte(os.Getenv("CONTACT_RECIPIENTS")), &ret); err != nil {
-
 		// Fall back to default if we fail to load from environment
 		ret = append(ret, &sendinblue.Address{
 			Name:  "System Receiver",
 			Email: "sys@cycoresys.com",
 		})
-
 	}
 	return ret
 }

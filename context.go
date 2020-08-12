@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/inconshreveable/log15"
 	"github.com/jmoiron/sqlx"
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 )
 
 // Context is the custom context for this web server

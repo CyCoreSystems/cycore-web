@@ -8,8 +8,8 @@ import (
 
 	"github.com/CyCoreSystems/cycore-web/db"
 	"github.com/inconshreveable/log15"
-	"github.com/labstack/echo"
-	"github.com/labstack/echo/middleware"
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 var addr string
@@ -33,7 +33,6 @@ func init() {
 }
 
 func main() {
-
 	flag.Parse()
 
 	log := log15.New("app", "cycore-web")
@@ -54,11 +53,11 @@ func main() {
 	defer db.Get().Close() // nolint
 
 	e := echo.New()
-	//e.Use(middleware.CSRF())
+	// e.Use(middleware.CSRF())
 	e.Use(middleware.Gzip())
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
-	//e.Use(middleware.Secure())
+	// e.Use(middleware.Secure())
 
 	// Create custom context
 	e.Use(func(h echo.HandlerFunc) echo.HandlerFunc {
